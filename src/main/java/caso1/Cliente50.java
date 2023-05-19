@@ -18,7 +18,7 @@ class Cliente50 {
                 new Runnable() {
             @Override
             public void run() {
-                mTcpClient = new TCPClient50("192.168.1.6",
+                mTcpClient = new TCPClient50("192.168.1.7",
                         new TCPClient50.OnMessageReceived() {
                     @Override
                     public void messageReceived(String message) {
@@ -96,7 +96,7 @@ class Cliente50 {
         return sum;
     }
 
-    void procesar(String f, double a, double b, int n) {
+    void procesar(String f, double a, double b, double n) {
 
         double min, max;
         double N = (b - a);//14;
@@ -104,13 +104,17 @@ class Cliente50 {
         double d =  ((N) / H);
         System.out.println("valor del d: "+d);
         double ancho = N / n;
-        int num_segments_hilo = n / H;
+        double numero = n / H;
+        double num_segments_hilo = Math.round(numero);
+        
+        System.out.println("numero: "+ numero);
+        System.out.println("valor del num_"+ num_segments_hilo);
 
         Thread todos[] = new Thread[40];
         for (int i = 0; i < H; i++) {
 
             if (i == H - 1) {
-                min = ((i - 1) * d + a);
+                min = ((i) * d + a);
                 max = b;
                 num_segments_hilo = n - num_segments_hilo * (H - 1);
                 System.out.println("a: " + min + "b: " + max + "hilo: " + i + "num_segments: " + num_segments_hilo);
@@ -146,10 +150,11 @@ class Cliente50 {
     public class tarea0101 extends Thread {
 
         public double max, min;
-        int segments, id;
+        double segments;
+        int id;
         String funtion;
 
-        tarea0101(double min_, double max_, String funtion_, int segments_, int id_) {
+        tarea0101(double min_, double max_, String funtion_, double segments_, int id_) {
             max = max_;
             min = min_;
             segments = segments_;
@@ -169,15 +174,18 @@ class Cliente50 {
 //            System.out.println(ancho);
             for (double i = min; i < max; i += ancho) {
                 
-                System.out.println("bandera 3.5");
-                area += ancho * evaluarExpresion(funtion, i);
-                System.out.println("bandera 3.8");
+                System.out.println("valores del minimo: "+i+"del id: "+ id);
+                //System.out.println("bandera 3.5");
+                area += ancho * evaluarExpresion(funtion, i);//195
+                //.out.println("bandera 3.8");
+                 System.out.println("valores del area: "+id+" "+area);
                 count++;
                 
             }
+            //195
             System.out.println("bandera 4");
-            ultimo_ancho = max - ancho * count;
-            area += ancho * evaluarExpresion(funtion, min + ancho * count);
+            //ultimo_ancho = max - ancho * count;
+            //area = area + ancho * evaluarExpresion(funtion, min + ancho * count);
             sum[id] = area;
             System.out.println("bandera 5");
             //System.out.println(" min:" + min + " max:" + (max - 1) + " id:" + id + " suma:" + suma);
